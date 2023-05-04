@@ -18,9 +18,9 @@ export default function StopWatch({
 }: TimeType) {
 	return (
 		<View style={styles.stopWatchContainer}>
-			<Text
-				style={styles.stopWatchTimer}
-			>{`${hours}:${minutes}:${seconds}:${milliseconds}`}</Text>
+			<Text style={styles.stopWatchTimer}>{`${hours === 0 ? "00" : hours}:${
+				minutes === 0 ? "00" : minutes
+			}:${seconds === 0 ? "00" : seconds}`}</Text>
 			<View style={styles.stopWatchActions}>
 				<AntDesign
 					style={{
