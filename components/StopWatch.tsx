@@ -9,6 +9,9 @@ import {
 import { TimeType } from "../utils/TimeType";
 import { AntDesign } from "@expo/vector-icons";
 
+function convertTwoDigits(numberToConvert: number) {
+	return numberToConvert < 10 ? `0${numberToConvert}` : numberToConvert;
+}
 export default function StopWatch({
 	milliseconds,
 	seconds,
@@ -17,9 +20,9 @@ export default function StopWatch({
 }: TimeType) {
 	return (
 		<View style={styles.stopWatchContainer}>
-			<Text style={styles.stopWatchTimer}>{`${hours === 0 ? "00" : hours}:${
-				minutes === 0 ? "00" : minutes
-			}:${seconds === 0 ? "00" : seconds}`}</Text>
+			<Text style={styles.stopWatchTimer}>{`${convertTwoDigits(
+				hours,
+			)}:${convertTwoDigits(minutes)}:${convertTwoDigits(seconds)}`}</Text>
 			<View style={styles.stopWatchActions}>
 				<AntDesign
 					style={{

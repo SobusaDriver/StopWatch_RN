@@ -18,16 +18,31 @@ type StopWatchAction = {
 	payload: { id: number };
 };
 
+function getRandomIndex() {
+	return Math.floor(Math.random() * 1000);
+}
+
 export default function App() {
 	const [listOfStopwatch, dispatch] = useReducer(reducer, []);
 
-	const incrementCounter = () => {};
+	const incrementCounter = (id: number) => {
+		setInterval(
+			() =>
+				dispatch({
+					type: StopWatchActions.INCREASE,
+					payload: { id: id },
+				}),
+			100,
+		);
+	};
 
 	function reducer(state: Array<TimeType>, action: StopWatchAction) {
 		const { type, payload } = action;
 		switch (type) {
 			case StopWatchActions.ADD:
-				return [...state, { ...initTimer, id: state.length }];
+				console.log(state);
+				console.log({ ...initTimer, id: payload.id });
+				return [...state, { ...initTimer, id: payload.id }];
 			case StopWatchActions.DELETE:
 				return state.filter((item, id) => {
 					if (item.id === id) {
@@ -36,22 +51,22 @@ export default function App() {
 					return false;
 				});
 			case StopWatchActions.INCREASE:
-				const actualTimer = state[payload.id - 1];
+				const actualIndex = state.findIndex((item) => item.id === payload.id);
+				const actualTimer = state[actualIndex];
 				actualTimer.milliseconds += 100;
-				if (actualTimer.milliseconds > 1000) {
+				if (actualTimer.milliseconds >= 1000) {
+					actualTimer.milliseconds = 0;
 					actualTimer.seconds++;
-					if (actualTimer.seconds > 60) {
+					if (actualTimer.seconds >= 60) {
+						actualTimer.seconds = 0;
 						actualTimer.minutes++;
-						if (actualTimer.minutes > 60) {
+						if (actualTimer.minutes >= 60) {
+							actualTimer.minutes = 0;
 							actualTimer.hours++;
 						}
 					}
 				}
-				return [
-					...state.slice(payload.id - 2),
-					actualTimer,
-					...state.slice(payload.id, state.length - 1),
-				];
+				return [...state.splice(actualIndex, 1, actualTimer)];
 			case StopWatchActions.PAUSE:
 				return state;
 			default:
@@ -59,12 +74,6 @@ export default function App() {
 		}
 	}
 
-	// const addStopWatch = () => {
-	// 	setStopwatchTimer((prevList) => {
-	// 		return [...prevList, { ...initTimer, id: prevList.length }];
-	// 	});
-	// 	setInterval()
-	// };
 	return (
 		<View style={styles.container}>
 			<StatusBar style="auto" />
@@ -75,12 +84,14 @@ export default function App() {
 				renderItem={({ item }) => <StopWatch {...item} />}
 			/>
 			<ActionButton
-				onClick={() =>
+				onClick={() => {
+					const newId = getRandomIndex();
 					dispatch({
 						type: StopWatchActions.ADD,
-						payload: { id: listOfStopwatch.length },
-					})
-				}
+						payload: { id: newId },
+					});
+					incrementCounter(newId);
+				}}
 			/>
 		</View>
 	);
