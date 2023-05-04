@@ -1,0 +1,48 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\kenla\AppData\Local\node\corepack\yarn\1.22.19\bin\yarn.js
+
+PATH: 
+  C:\Program Files\PowerShell\7;C:\Program Files\Microsoft\jdk-17.0.7.7-hotspot\bin;C:\Program Files\Eclipse Adoptium\jdk-20.0.1.9-hotspot\bin;C:\Python311\Scripts\;C:\Python311\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\kenla\Programs\platform-tools;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\nodejs\;C:\Program Files\PowerShell\7\;C:\Users\kenla\AppData\Local\pnpm;C:\Users\kenla\scoop\shims;C:\Users\kenla\AppData\Local\Microsoft\WindowsApps;C:\Users\kenla\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\kenla\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.16.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile 'C:\Users\kenla\AppData\Local\Yarn\Cache\v6\npm-ms-2.1.2-d09d1f357b443f493382a8eb3ccd183872ae6009-integrity\node_modules\ms\index.js' -> 'C:\Users\kenla\Projects\stopwatch\node_modules\@babel\core\node_modules\ms\index.js'
+
+npm manifest: 
+  {
+    "name": "stopwatch",
+    "version": "1.0.0",
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web"
+    },
+    "dependencies": {
+      "expo": "~48.0.15",
+      "expo-status-bar": "~1.4.4",
+      "react": "18.2.0",
+      "react-native": "0.71.7"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.20.0",
+      "@types/react": "~18.0.38",
+      "typescript": "^4.9.4"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
