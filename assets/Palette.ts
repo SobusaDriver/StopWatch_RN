@@ -6,3 +6,5 @@ export const ACCENT_COLOR = "#03A9F4";
 export const PRIMARY_TEXT = "#212121";
 export const SECONDARY_TEXT = "#757575";
 export const DIVIDER_COLOR = "#BDBDBD";
+export const DELETE_COLOR = "#D50000";
+export const WARNING_COLOR = "#FF5722";

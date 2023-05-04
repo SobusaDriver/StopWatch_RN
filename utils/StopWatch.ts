@@ -1,6 +1,11 @@
-import { Time } from "./TimeType";
+import { TimeType } from "./TimeType";
 
-export function DisplayTimer({ milliseconds, seconds, minutes, hours }: Time) {
+export function DisplayTimer({
+	milliseconds,
+	seconds,
+	minutes,
+	hours,
+}: TimeType) {
 	milliseconds += milliseconds;
 	if (milliseconds === 1000) {
 		seconds += 1;
