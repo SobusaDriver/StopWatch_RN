@@ -3,6 +3,7 @@ export type TimeType = {
 	seconds: number;
 	minutes: number;
 	hours: number;
+	id: number;
 };
 
 export const initTimer: TimeType = {
@@ -10,4 +11,5 @@ export const initTimer: TimeType = {
 	seconds: 0,
 	minutes: 0,
 	hours: 0,
+	id: 0,
 };

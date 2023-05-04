@@ -1,10 +1,9 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import {
 	DARK_PRIMARY_COLOR,
 	DELETE_COLOR,
 	LIGHT_PRIMARY_COLOR,
 	PRIMARY_COLOR,
-	PRIMARY_TEXT,
 	TEXT_OR_ICONS,
 } from "../assets/Palette";
 import { TimeType } from "../utils/TimeType";
@@ -45,16 +44,16 @@ export default function StopWatch({
 const styles = StyleSheet.create({
 	stopWatchContainer: {
 		height: 80,
-		width: "95%",
+		width: "92%",
 		borderRadius: 8,
+		marginBottom: 16,
 		backgroundColor: PRIMARY_COLOR,
-		// flex: 1,
+		alignSelf: "center",
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
 	stopWatchTimer: {
-		// height: 64,
 		color: TEXT_OR_ICONS,
 		fontSize: 56,
 		paddingLeft: 8,
@@ -62,8 +61,6 @@ const styles = StyleSheet.create({
 	stopWatchActions: {
 		flexDirection: "row",
 		marginEnd: 8,
-		// alignItems: "center",
-		// justifyContent: "space-between",
 	},
 	actionButton: {
 		height: 56,
