@@ -92,7 +92,7 @@ export default function App() {
 	return (
 		<View style={styles.container}>
 			<StatusBar style="auto" />
-			<Text style={styles.titleText}>Ultimate Stopwatch</Text>
+			<Text style={styles.titleText}>Classic Stopwatch</Text>
 			{listOfStopwatch.length === 0 ? (
 				<Text style={styles.emptyText}>Dont Be Shy, Add Something!</Text>
 			) : (
