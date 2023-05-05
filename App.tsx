@@ -2,12 +2,13 @@ import { StatusBar } from "expo-status-bar";
 import { useReducer, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import ActionButton from "./components/ActionButton";
-import { TEXT_OR_ICONS } from "./assets/Palette";
+import { PRIMARY_COLOR, TEXT_OR_ICONS } from "./assets/Palette";
 import StopWatch from "./components/StopWatch";
 import { TimeType, initTimer } from "./utils/TimeType";
 
 enum StopWatchActions {
 	ADD = "ADD",
+	UPDATE = "UPDATE",
 	DELETE = "DELETE",
 	INCREASE = "INCREASE",
 	PAUSE = "PAUSE",
@@ -15,7 +16,7 @@ enum StopWatchActions {
 
 type StopWatchAction = {
 	type: StopWatchActions;
-	payload: { id: number };
+	payload: { id: number; intervalId?: ReturnType<typeof setTimeout> };
 };
 
 function getRandomIndex() {
@@ -26,7 +27,7 @@ export default function App() {
 	const [listOfStopwatch, dispatch] = useReducer(reducer, []);
 
 	const incrementCounter = (id: number) => {
-		setInterval(
+		const intervalId = setInterval(
 			() =>
 				dispatch({
 					type: StopWatchActions.INCREASE,
@@ -34,22 +35,34 @@ export default function App() {
 				}),
 			100,
 		);
+		dispatch({
+			type: StopWatchActions.UPDATE,
+			payload: { id: id, intervalId: intervalId },
+		});
 	};
 
 	function reducer(state: Array<TimeType>, action: StopWatchAction) {
 		const { type, payload } = action;
 		switch (type) {
 			case StopWatchActions.ADD:
-				console.log(state);
-				console.log({ ...initTimer, id: payload.id });
-				return [...state, { ...initTimer, id: payload.id }];
+				const newStopWatch = { ...initTimer, id: payload.id };
+				return [...state, newStopWatch];
+			case StopWatchActions.UPDATE:
+				const newIndex = state.findIndex((item) => item.id === payload.id);
+				const newTimer = state[newIndex];
+				newTimer.intervalId = payload.intervalId;
+				const newTempList = [...state];
+				newTempList.splice(newIndex, 1, newTimer);
+				return newTempList;
 			case StopWatchActions.DELETE:
-				return state.filter((item, id) => {
-					if (item.id === id) {
-						return true;
+				const filterResult = state.filter((item) => {
+					if (item.id === payload.id) {
+						return false;
 					}
-					return false;
+					return true;
 				});
+				return filterResult;
+
 			case StopWatchActions.INCREASE:
 				const actualIndex = state.findIndex((item) => item.id === payload.id);
 				const actualTimer = state[actualIndex];
@@ -66,7 +79,9 @@ export default function App() {
 						}
 					}
 				}
-				return [...state.splice(actualIndex, 1, actualTimer)];
+				const newList = [...state];
+				newList.splice(actualIndex, 1, actualTimer);
+				return newList;
 			case StopWatchActions.PAUSE:
 				return state;
 			default:
@@ -78,11 +93,37 @@ export default function App() {
 		<View style={styles.container}>
 			<StatusBar style="auto" />
 			<Text style={styles.titleText}>Ultimate Stopwatch</Text>
-			<FlatList
-				style={styles.list}
-				data={listOfStopwatch}
-				renderItem={({ item }) => <StopWatch {...item} />}
-			/>
+			{listOfStopwatch.length === 0 ? (
+				<Text style={styles.emptyText}>Dont Be Shy, Add Something!</Text>
+			) : (
+				<FlatList
+					style={styles.list}
+					data={listOfStopwatch}
+					renderItem={({ item }) => (
+						<StopWatch
+							{...item}
+							deleteWatch={() => {
+								clearInterval(item.intervalId);
+								dispatch({
+									type: StopWatchActions.DELETE,
+									payload: { id: item.id },
+								});
+							}}
+							toogleWatch={() => {
+								if (item.intervalId !== undefined) {
+									clearInterval(item.intervalId);
+									dispatch({
+										type: StopWatchActions.UPDATE,
+										payload: { id: item.id, intervalId: undefined },
+									});
+									return;
+								}
+								incrementCounter(item.id);
+							}}
+						/>
+					)}
+				/>
+			)}
 			<ActionButton
 				onClick={() => {
 					const newId = getRandomIndex();
@@ -106,11 +147,20 @@ const styles = StyleSheet.create({
 	titleText: {
 		fontSize: 32,
 		color: TEXT_OR_ICONS,
-		marginTop: 32,
+		paddingTop: 32,
 		marginBottom: 16,
+		width: "100%",
+		alignContent: "center",
+		textAlign: "center",
+		backgroundColor: PRIMARY_COLOR,
 	},
 	list: {
 		flex: 1,
 		width: "100%",
+	},
+	emptyText: {
+		fontSize: 24,
+		color: TEXT_OR_ICONS,
+		alignSelf: "center",
 	},
 });

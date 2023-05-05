@@ -9,15 +9,23 @@ import {
 import { TimeType } from "../utils/TimeType";
 import { AntDesign } from "@expo/vector-icons";
 
+type stopWatchProps = {
+	deleteWatch: () => void;
+	toogleWatch: () => void;
+} & TimeType;
+
 function convertTwoDigits(numberToConvert: number) {
 	return numberToConvert < 10 ? `0${numberToConvert}` : numberToConvert;
 }
+
 export default function StopWatch({
-	milliseconds,
 	seconds,
 	minutes,
 	hours,
-}: TimeType) {
+	intervalId,
+	deleteWatch,
+	toogleWatch,
+}: stopWatchProps) {
 	return (
 		<View style={styles.stopWatchContainer}>
 			<Text style={styles.stopWatchTimer}>{`${convertTwoDigits(
@@ -29,15 +37,17 @@ export default function StopWatch({
 						...styles.actionButton,
 						backgroundColor: LIGHT_PRIMARY_COLOR,
 					}}
-					name="pause"
+					name={`${intervalId !== undefined ? "pause" : "caretright"}`}
 					size={56}
 					color={DARK_PRIMARY_COLOR}
+					onPress={() => toogleWatch()}
 				/>
 				<AntDesign
 					style={{ ...styles.actionButton, backgroundColor: DELETE_COLOR }}
 					name="close"
 					size={56}
 					color={TEXT_OR_ICONS}
+					onPress={() => deleteWatch()}
 				/>
 			</View>
 		</View>
@@ -58,8 +68,8 @@ const styles = StyleSheet.create({
 	},
 	stopWatchTimer: {
 		color: TEXT_OR_ICONS,
-		fontSize: 56,
-		paddingLeft: 8,
+		fontSize: 48,
+		paddingLeft: 16,
 	},
 	stopWatchActions: {
 		flexDirection: "row",

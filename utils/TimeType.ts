@@ -4,6 +4,7 @@ export type TimeType = {
 	minutes: number;
 	hours: number;
 	id: number;
+	intervalId?: ReturnType<typeof setTimeout>;
 };
 
 export const initTimer: TimeType = {
